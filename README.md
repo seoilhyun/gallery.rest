@@ -1,3 +1,3 @@
 # gallery.rest
 
-spring-boot-data-jpa + JDK 1.8
+> spring-boot-starter-data-jpa + JDK 1.8
