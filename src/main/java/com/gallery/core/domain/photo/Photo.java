@@ -29,7 +29,7 @@ public class Photo {
 
     private String caption;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ImageFile image;
 
     public Photo(String caption, MultipartFile image) {

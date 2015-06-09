@@ -18,5 +18,14 @@ public class PhotoDTO {
         private String caption;
 
         private MultipartFile image;
+
+    }
+
+    @Data
+    public static class Response {
+
+        private String caption;
+
+        private String imageName;
     }
 }

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping("/albums")
+@RequestMapping("/api/albums")
 public class AlbumController {
 
     @Autowired private ModelMapper modelMapper;
