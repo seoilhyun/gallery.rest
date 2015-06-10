@@ -32,8 +32,8 @@ public class Photo {
     @OneToOne(cascade = CascadeType.ALL)
     private ImageFile image;
 
-    public Photo(String caption, MultipartFile image) {
+    public Photo(String caption, ImageFile image) {
         setCaption(caption);
-        setImage(new ImageFile(image));
+        setImage(image);
     }
 }

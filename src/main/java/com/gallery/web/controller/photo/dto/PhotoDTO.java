@@ -27,5 +27,9 @@ public class PhotoDTO {
         private String caption;
 
         private String imageName;
+
+        private String imagePath;
+
+        private String imageFile;
     }
 }

@@ -14,4 +14,6 @@ public interface AlbumService {
     public Album createNewAlbum(Album album);
 
     public Album updateAlbum(Album origin, Album update);
+
+    public void deleteAlbum(Album album);
 }

@@ -29,6 +29,10 @@ public class DefaultAlbumService implements AlbumService {
     @Override
     public Album updateAlbum(Album origin, Album update) {
 
+        if(origin == null) {
+            throw new RuntimeException();
+        }
+
         if(StringUtils.hasText(update.getTitle())) {
             origin.setTitle(update.getTitle());
         }
@@ -38,5 +42,15 @@ public class DefaultAlbumService implements AlbumService {
         }
 
         return repository.save(origin);
+    }
+
+    @Override
+    public void deleteAlbum(Album album) {
+
+        if(album == null) {
+            throw new RuntimeException();
+        }
+
+        repository.delete(album);
     }
 }

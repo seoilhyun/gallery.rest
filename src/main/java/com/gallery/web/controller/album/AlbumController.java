@@ -3,6 +3,7 @@ package com.gallery.web.controller.album;
 import com.gallery.core.domain.album.Album;
 import com.gallery.core.repository.album.AlbumRepository;
 import com.gallery.core.service.album.AlbumService;
+import com.gallery.web.controller.AbstractCommonController;
 import com.gallery.web.controller.album.dto.AlbumDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,10 @@ import java.util.stream.Collectors;
  * To change this template use File | Settings | File Templates.
  */
 @Controller
-@RequestMapping("/api/albums")
-public class AlbumController {
-
-    @Autowired private ModelMapper modelMapper;
+@RequestMapping("/albums")
+public class AlbumController extends AbstractCommonController {
 
     @Autowired private AlbumService service;
-    @Autowired private AlbumRepository repository;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity createNewAlbum(@Valid @RequestBody AlbumDTO.Request request, BindingResult result) {
@@ -47,52 +45,29 @@ public class AlbumController {
         return new ResponseEntity<>(album, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity getAlbums() {
-        List<Album> albums = repository.findAll();
-
-        return new ResponseEntity<>(albums.stream().map(album -> modelMapper.map(album, AlbumDTO.Response.class)).collect(Collectors.toList()), HttpStatus.OK);
-    }
-
-
-    @RequestMapping(value = "/{id}", method=RequestMethod.GET)
-    public ResponseEntity getAlbum(@PathVariable Long id) {
-        Album album = repository.findOne(id);
-
-        if(album == null) {
-            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(modelMapper.map(album, AlbumDTO.Response.class), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/{id}", method={ RequestMethod.PUT, RequestMethod.PATCH })
-    public ResponseEntity updateAlbum(@PathVariable Long id, @Valid @RequestBody AlbumDTO.Update request, BindingResult result) {
+    @RequestMapping(value = "/{album}", method={ RequestMethod.PUT, RequestMethod.PATCH })
+    public ResponseEntity updateAlbum(@PathVariable Album album, @Valid @RequestBody AlbumDTO.Update request, BindingResult result) {
         if(result.hasErrors()) {
             //
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
 
-        Album origin = repository.findOne(id);
-
-        if(origin == null) {
-
-        }
-
-        Album updateAlbum = service.updateAlbum(origin, modelMapper.map(request, Album.class));
+        Album updateAlbum = service.updateAlbum(album, modelMapper.map(request, Album.class));
 
         return new ResponseEntity<>(modelMapper.map(updateAlbum, AlbumDTO.Response.class), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity deleteAlbum(@PathVariable Long id) {
-        Album album = repository.findOne(id);
+    @RequestMapping(value = "/{album}", method=RequestMethod.DELETE)
+    public ResponseEntity deleteAlbum(@PathVariable Album album) {
 
-        if(album == null) {
-            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        try{
+
+            service.deleteAlbum(album);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        repository.delete(album);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

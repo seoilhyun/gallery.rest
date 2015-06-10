@@ -30,16 +30,12 @@ public class ImageFile {
 
     private String name;
 
+    private String file;
+
     private String contentType;
 
     private String path;
 
-    private long size;
+    private long size = 0;
 
-    public ImageFile(MultipartFile file) {
-        setName(file.getOriginalFilename());
-        setContentType(file.getContentType());
-        //setPath(path);
-        setSize(file.getSize());
-    }
 }
